@@ -47,9 +47,22 @@ weather_raw = weath.to_s
 
 require "json"
 weather_parsed = JSON.parse(weather_raw)
-pp weather_parsed
 
 
+currently_hash = weather_parsed.fetch("currently")
+current_temp = weather_parsed.fetch("temp")
+
+# Some locations around the world do not come with minutely data.
+minutely_hash = weather_parsed.fetch("minutely", false)
+
+if minutely_hash
+  next_hour_summary = minutely_hash.fetch("summary")
+
+  puts "Next hour: #{next_hour_summary}"
+end
+
+hourly_hash = weather_parsed.fetch("hourly")
+hourly_data_array = 
 
 
 
