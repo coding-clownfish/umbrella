@@ -50,7 +50,7 @@ weather_parsed = JSON.parse(weather_raw)
 
 
 currently_hash = weather_parsed.fetch("currently")
-current_temp = weather_parsed.fetch("temp")
+current_temp = currently_hash.fetch("temperature")
 
 # Some locations around the world do not come with minutely data.
 minutely_hash = weather_parsed.fetch("minutely", false)
@@ -63,7 +63,7 @@ end
 
 hour_hash = weather_parsed.fetch("hourly")
 hourly_data_array = hour_hash.fetch("data")
-next_twelve_hours=hourly_data_array[1..12]
+next_twelve_hours = hourly_data_array[1..12]
 
 precip_prob_threshold = 0.10
 
@@ -76,19 +76,15 @@ next_twelve_hours.each do |hour_hash|
     any_precipitation = true
 
     precip_time = Time.at(hour_hash.fetch("time"))
-
     seconds_from_now = precip_time - Time.now
-
     hours_from_now = seconds_from_now / 60 / 60
 
-    puts "In #{hours_from_now} hours, there is a #{precip_prob*100}% chance of precipation."
+    puts "In #{hours_from_now} hours, there is a #{precip_prob*100}% chance of precipitation."
   end
+end
 
-  if any_precipitation == true
+if any_precipitation == true
     puts "You might want to take an umbrella!"
-  else
-    puts "You probably won't need an umbrela."
-  end
-
-
-#Display the current temperature and summary of the weather for the next hour
+else
+    puts "You probably won't need an umbrella."
+end
