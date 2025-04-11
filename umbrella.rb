@@ -23,7 +23,7 @@ require "http"
 resp = HTTP.get(maps_url)
 raw_response = resp.to_s
 
-require"json"
+require "json"
 
 parsed_response = JSON.parse(raw_response)
 
@@ -36,14 +36,23 @@ loc = geo.fetch("location")
 latitude = loc.fetch("lat")
 longitude = loc.fetch("lng")
 
-pp latitude
-
-
-  
-
-
-
 
 #Get the weather at the user’s coordinates from the Pirate Weather AP
+
+weather_url="https://api.pirateweather.net/forecast/"+ ENV.fetch("PIRATE_WEATHER_KEY")+ "/"+ latitude.to_s + "," + longitude.to_s
+
+require "http"
+weath = HTTP.get(weather_url)
+weather_raw = weath.to_s
+
+require "json"
+weather_parsed = JSON.parse(weather_raw)
+pp weather_parsed
+
+
+
+
+
+
 
 #Display the current temperature and summary of the weather for the next hour
