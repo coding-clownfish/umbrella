@@ -1,10 +1,6 @@
-# Write your solution below!
-#source "https://rubygems.org"
-#gem "dotenv"
 
-require "http"
+
 require "dotenv/load"
-require "json"
 
 pirate_weather_key = ENV.fetch("PIRATE_WEATHER_KEY")
 pirate_weather_url = "https://api.pirateweather.net/forecast/" + pirate_weather_key + "/"
@@ -12,14 +8,41 @@ pirate_weather_url = "https://api.pirateweather.net/forecast/" + pirate_weather_
 #ask the user for their location
 
 pp "Where are you located?"
-user_location= gets.chomp
+
+user_location= gets.chomp.gsub(" ","")
+
 pp user_location
 
 #Get user latitude and longitude from the Google Maps API
 
 maps_url="https://maps.googleapis.com/maps/api/geocode/json?address="+ user_location + "&key="+ ENV.fetch("GMAPS_KEY")
 pp maps_url
- 
+
+require "http"
+
+resp = HTTP.get(maps_url)
+raw_response = resp.to_s
+
+require"json"
+
+parsed_response = JSON.parse(raw_response)
+
+results = parsed_response.fetch("results")
+
+first_result = results.at(0)
+
+geo = first_result.fetch("geometry")
+loc = geo.fetch("location")
+latitude = loc.fetch("lat")
+longitude = loc.fetch("lng")
+
+pp latitude
+
+
+  
+
+
+
 
 #Get the weather at the user’s coordinates from the Pirate Weather AP
 
